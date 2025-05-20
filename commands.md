@@ -48,5 +48,6 @@ poetry run python update_qdrant.py
 rm -rf chunks/* chunk_results/* __pycache__/*
 ```
 
+# Example command (use placeholders for actual keys)
 
-OPENAI_API_KEY="your-openai-api-key" && export QDRANT_URL="your-qdrant-url " && export QDRANT_API_KEY="your-qdrant-api-key" && poetry run python -c "from whisper import WhisperAudioProcessor; p = WhisperAudioProcessor(api_key='$OPENAI_API_KEY'); p.test_search('foreign trade zone manual');"
+export OPENAI_API_KEY="your-openai-api-key" && export QDRANT_URL="your-qdrant-url" && export QDRANT_API_KEY="your-qdrant-api-key" && poetry run python -c "from whisper import WhisperAudioProcessor; p = WhisperAudioProcessor(api_key='$OPENAI_API_KEY'); p.test_search('foreign trade zone manual');"
