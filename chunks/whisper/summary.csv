@@ -1,0 +1,4 @@
+method,chunks,avg_length
+fixed_text_200,4,183.0
+fixed_text_500,1,447.0
+recursive_500,1,447.0

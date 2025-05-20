@@ -1,0 +1,35 @@
+[tool.poetry]
+name = "audio-vectoring"
+version = "0.1.0"
+description = "A framework for comparing audio vectorization approaches"
+authors = ["Your Name <your.email@example.com>"]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<3.11"
+numpy = "^1.24.0"
+torch = "^2.0.0"
+librosa = "^0.10.0"
+transformers = "^4.30.0"
+qdrant-client = "^1.6.0"
+pydub = "^0.25.1"
+soundfile = "^0.12.1"
+evaluate = "^0.4.0"
+nltk = "^3.8.1"
+pandas = "^2.0.0"
+tqdm = "^4.65.0"
+langchain = "^0.0.308"
+langchain-openai = "^0.0.4"
+langchain-community = "^0.0.16"
+langchain-qdrant = "^0.0.16"
+openai = "^1.3.0"
+fastembed = "^0.1.3"
+langchain-core = "^0.1.16"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.0.0"
+black = "^23.0.0"
+isort = "^5.12.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
