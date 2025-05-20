@@ -1,114 +1,10 @@
-# Audio Vectorization Framework
+# Audio Vectorization Approaches
 
-This project implements and compares different approaches for audio vectorization and search:
+This project implements and compares three different approaches for audio vectorization and search using Qdrant as the vector database:
 
-1. **Whisper-based** (Text-based): Transcribes audio to text, then vectorizes the text
-2. **Wav2Vec-based** (Direct Audio): Directly embeds audio segments
-3. **CLAP-based** (Multimodal): Uses a multimodal model for both text-to-audio and audio-to-audio search
-
-## ⚠️ Code Restructuring Notice
-
-> This codebase has been restructured from its original form to a more modular architecture.
-> The original files (whisper.py, wave2vec.py, clap.py, etc.) remain for reference, but all
-> functionality has been refactored into the `audio_vectoring` package.
-> For more details on the structure, see `STRUCTURE.md`.
-
-## Project Structure
-
-```
-audio_vectoring/
-├── processors/              # Audio processor implementations
-│   ├── base.py              # Base processor interface
-│   ├── whisper_processor.py # Whisper (text-based) processor
-│   ├── wav2vec_processor.py # Wav2Vec (audio-based) processor
-│   └── clap_processor.py    # CLAP (multimodal) processor
-├── chunking/                # Audio and text chunking strategies
-│   ├── text_chunking.py     # Text chunking methods
-│   └── audio_chunking.py    # Advanced audio chunking methods
-├── embeddings/              # Embedding functions
-│   └── clap_embedding.py    # CLAP embedding functions
-├── storage/                 # Vector database connectors
-│   └── qdrant_connector.py  # Qdrant vector DB connector
-└── utils/                   # Utility functions
-    └── audio_utils.py       # Audio processing utilities
-
-scripts/
-└── compare_search.py        # Script to run comparison search
-
-chunks/                      # Storage for chunks
-chunk_results/               # Storage for search results
-```
-
-## Requirements
-
-- Python 3.8+
-- Poetry for dependency management
-- OpenAI API key (for Whisper-based approach)
-- FFmpeg (for audio processing)
-
-## Installation
-
-1. Clone the repository
-2. Install dependencies with Poetry:
-   ```
-   poetry install
-   ```
-
-## Usage
-
-### Running a comparison search
-
-```bash
-# Set OpenAI API key if using Whisper
-export OPENAI_API_KEY=your_api_key_here
-
-# Run comparison search
-poetry run python scripts/compare_search.py
-```
-
-This will:
-
-1. Process the test audio file with all three methods
-2. Run searches using the same query across all methods
-3. Save results to the `chunk_results` directory
-4. Generate a comparison summary
-
-### Customizing the search
-
-You can modify `scripts/compare_search.py` to:
-
-- Change the audio file
-- Modify the text query
-- Adjust chunking methods and parameters
-- Customize the comparison metrics
-
-## Chunking Strategies
-
-Each processor supports different chunking strategies:
-
-### Whisper (Text-based)
-
-- `fixed_text`: Fixed-size text chunks
-- `recursive`: Recursive character splitting with optimized separators
-- `sentences`: Sentence-based chunking
-
-### Wav2Vec (Audio-based)
-
-- `fixed`: Fixed-size audio chunks
-- `silence`: Silence detection
-- `spectrogram`: Spectrogram-based chunking
-
-### CLAP (Multimodal)
-
-- `fixed`: Fixed-size audio chunks
-- `silence`: Silence detection
-- `semantic`: Semantic shift detection
-
-## Search Capabilities
-
-- **Whisper**: Text-based semantic search
-- **Wav2Vec**: Audio similarity search
-- **CLAP**: Both text-to-audio and audio-to-audio search
+1. **Whisper-based** (Text-based): Transcribes audio to text, then chunks and embeds the text
+2. **Wav2Vec-based** (Direct Audio): Directly embeds audio segments without transcription
+3. **CLAP-based** (Multimodal): Supports both text-to-audio and audio-to-audio search
 
 ## Benchmark Results
 
@@ -195,3 +91,56 @@ qdrant_connector = QdrantConnector(
     api_key="your-api-key-here"
 )
 ```
+
+## Getting Started
+
+1. Install dependencies:
+
+```bash
+poetry install
+```
+
+2. Set up environment and clean caches:
+
+```bash
+# First edit the script to add your API keys
+nano setup_env.sh
+
+# Then run it
+./setup_env.sh
+```
+
+3. Run any of the approaches:
+
+```bash
+poetry run python whisper.py
+poetry run python wave2vec.py
+poetry run python clap.py
+```
+
+## Processing Large Audio Files
+
+When working with long audio files (1+ hour), follow these best practices:
+
+1. **Use Qdrant Cloud**: Sign up at [cloud.qdrant.io](https://cloud.qdrant.io/) and set your credentials in `setup_env.sh`
+2. **Clean cache files**: Run `./setup_env.sh` to clear old chunks and cache files
+3. **Use recursive chunking**: This method provides better context preservation:
+   ```bash
+   # Example for processing large files with Whisper
+   poetry run python compare_search.py --chunking_method recursive --chunk_param 500
+   ```
+4. **Monitor resource usage**: These processes can be memory-intensive, especially for Whisper transcription
+
+The updated code now handles long audio files by:
+
+- Processing audio in manageable segments
+- Using cloud storage for better performance
+- Implementing more robust error handling
+
+## Requirements
+
+- Python 3.10+
+- Poetry
+- FFmpeg (for audio processing)
+- OpenAI API key (optional, for Whisper embeddings)
+- Qdrant Cloud account (recommended for large files)

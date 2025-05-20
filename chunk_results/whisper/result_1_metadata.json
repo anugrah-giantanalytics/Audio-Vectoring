@@ -1,6 +1,0 @@
-{
-  "source": "test_audio.wav",
-  "chunk_id": 0,
-  "chunking_method": "recursive",
-  "processor": "whisper"
-}
